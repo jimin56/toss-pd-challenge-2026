@@ -1,0 +1,19 @@
+/* Toss Design System — Elevation & motion
+ * Shadow philosophy: minimal, neutral, single-layer near-black at low opacity.
+ * In a financial app visual noise undermines trust, so elevation is quiet. */
+:root {
+  --shadow-1: 0 1px 4px rgba(0, 19, 43, 0.06);                        /* raised card */
+  --shadow-2: 0 2px 8px rgba(0, 19, 43, 0.08);                        /* floating / dropdown */
+  --shadow-3: 0 6px 20px rgba(0, 19, 43, 0.12);                       /* dialog / sheet */
+  --shadow-nav: 0 1px 0 rgba(0, 27, 55, 0.06);                        /* navbar hairline */
+
+  /* Motion — Toss favours quick, soft ease-out; no bounce on core UI. */
+  --ease-standard: cubic-bezier(0.25, 0.1, 0.25, 1); /* @kind other */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1); /* @kind other */
+  --duration-fast: 150ms; /* @kind other */
+  --duration-base: 200ms; /* @kind other */
+  --duration-slow: 300ms; /* @kind other */
+
+  /* Press feedback: TDS presses scale down slightly + darken. */
+  --press-scale: 0.97; /* @kind other */
+}

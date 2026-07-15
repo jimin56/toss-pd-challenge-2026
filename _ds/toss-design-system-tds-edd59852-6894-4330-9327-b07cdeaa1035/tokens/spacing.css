@@ -1,0 +1,24 @@
+/* Toss Design System — Spacing & layout
+ * Toss works on a 4px base grid. Screens are designed at 375px wide (mobile).
+ * Money/summary screens breathe (24px+ group gaps); detail screens densify (8–12px). */
+:root {
+  --space-2:  2px;
+  --space-4:  4px;
+  --space-6:  6px;
+  --space-8:  8px;
+  --space-10: 10px;
+  --space-12: 12px;
+  --space-16: 16px;   /* default screen side padding */
+  --space-20: 20px;
+  --space-24: 24px;   /* group separation */
+  --space-32: 32px;   /* section separation, money breathing room */
+  --space-40: 40px;
+  --space-48: 48px;
+
+  --screen-padding-x: 24px;  /* Toss standard horizontal screen inset */
+  --screen-width: 375px;     /* mobile design width */
+
+  --navbar-height: 56px;
+  --cta-height: 56px;        /* bottom fixed primary CTA */
+  --tabbar-height: 60px;
+}

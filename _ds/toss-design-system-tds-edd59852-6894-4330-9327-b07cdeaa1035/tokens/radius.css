@@ -1,0 +1,16 @@
+/* Toss Design System — Corner radius
+ * Toss rounds generously and consistently. Buttons & cards land on ~16px;
+ * pills/full for chips and avatars. */
+:root {
+  --radius-2:  2px;
+  --radius-4:  4px;
+  --radius-6:  6px;
+  --radius-8:  8px;
+  --radius-10: 10px;
+  --radius-12: 12px;
+  --radius-14: 14px;
+  --radius-16: 16px;   /* buttons, cards, inputs */
+  --radius-20: 20px;
+  --radius-24: 24px;   /* bottom sheets, large surfaces */
+  --radius-full: 9999px;
+}

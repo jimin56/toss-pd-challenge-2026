@@ -1,0 +1,12 @@
+/* Toss Design System — Webfonts
+ *
+ * Toss ships a proprietary custom typeface, **Toss Product Sans** (built with
+ * Sandoll & Leedotype), which cannot be redistributed — Toss's own Figma library
+ * substitutes Apple SF Pro for the same reason.
+ *
+ * SUBSTITUTION (opt-in): to load **Wanted Sans** (SIL OFL, open source) — the community's
+ * near-drop-in replacement for Toss Product Sans — uncomment the @import below, then prepend
+ * 'Wanted Sans Variable' to --font-sans in tokens/typography.css. By default TDS ships the
+ * SF Pro / Apple SD Gothic Neo system stack (Toss's own Figma fallback), so there is no network
+ * dependency. Swap in licensed Toss Product Sans binaries here for production Toss work. */
+/* @import url('https://cdn.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.3/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css'); */

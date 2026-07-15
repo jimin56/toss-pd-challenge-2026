@@ -1,0 +1,57 @@
+/* Toss Design System — Typography scale
+ * Source: https://tossmini-docs.toss.im/tds-react-native/foundation/typography/
+ * Values shown are the base (100% "larger text" ratio). Sizes in px, unitless line-heights derived.
+ * TDS tokens: Typography 1–7 (major steps) + subTypography 1–13 (in-between steps). */
+:root {
+  /* WEBFONT (optional): Toss ships the proprietary 'Toss Product Sans' (undistributable —
+   * Toss's own Figma substitutes SF Pro for the same reason). To use the open-source near-clone
+   * 'Wanted Sans' instead, uncomment its @import in tokens/fonts.css and prepend the family here:
+   *   --font-sans: 'Wanted Sans Variable', 'Toss Product Sans', -apple-system, …
+   * By default we ship the SF Pro / Apple SD Gothic Neo system stack — the exact fallback Toss
+   * uses in Figma — so the system is self-contained with no network dependency. */
+  --font-sans: -apple-system, BlinkMacSystemFont,
+    system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+  /* Weights — TDS ships 8 weights but the UI exercises restraint (400 / 500 / 600 / 700). */
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+
+  /* ---- Major steps (font-size / line-height in px) ---- */
+  --t1-size: 30px;  --t1-line: 40px;   /* 매우 큰 제목 — hero title */
+  --t2-size: 26px;  --t2-line: 35px;   /* 큰 제목 — page title */
+  --t3-size: 22px;  --t3-line: 31px;   /* 일반 제목 — section title */
+  --t4-size: 20px;  --t4-line: 29px;   /* 작은 제목 — subsection */
+  --t5-size: 17px;  --t5-line: 25.5px; /* 일반 본문 — default body */
+  --t6-size: 15px;  --t6-line: 22.5px; /* 작은 본문 — small body */
+  --t7-size: 13px;  --t7-line: 19.5px; /* caption */
+
+  /* ---- Sub steps (fine-grained) ---- */
+  --sub1-size: 29px; --sub1-line: 38px;
+  --sub2-size: 28px; --sub2-line: 37px;
+  --sub3-size: 27px; --sub3-line: 36px;
+  --sub4-size: 25px; --sub4-line: 34px;
+  --sub5-size: 24px; --sub5-line: 33px;
+  --sub6-size: 23px; --sub6-line: 32px;
+  --sub7-size: 21px; --sub7-line: 30px;
+  --sub8-size: 19px; --sub8-line: 28px;
+  --sub9-size: 18px; --sub9-line: 27px;
+  --sub10-size: 16px; --sub10-line: 24px;
+  --sub11-size: 14px; --sub11-line: 21px;
+  --sub12-size: 12px; --sub12-line: 18px;
+  --sub13-size: 11px; --sub13-line: 16.5px;
+
+  /* Numbers: TDS uses tabular figures for tables/ledgers, proportional for display. */
+  --font-feature-tabular: "tnum" 1;
+}
+
+/* Convenience text-style classes mirroring TDS token names.
+ * Letter-spacing kept near 0 (Toss keeps tracking tight and neutral). */
+.tds-t1 { font-size: var(--t1-size); line-height: var(--t1-line); font-weight: var(--weight-bold);   letter-spacing: -0.02em; }
+.tds-t2 { font-size: var(--t2-size); line-height: var(--t2-line); font-weight: var(--weight-bold);   letter-spacing: -0.02em; }
+.tds-t3 { font-size: var(--t3-size); line-height: var(--t3-line); font-weight: var(--weight-bold);   letter-spacing: -0.01em; }
+.tds-t4 { font-size: var(--t4-size); line-height: var(--t4-line); font-weight: var(--weight-semibold); letter-spacing: -0.01em; }
+.tds-t5 { font-size: var(--t5-size); line-height: var(--t5-line); font-weight: var(--weight-regular); }
+.tds-t6 { font-size: var(--t6-size); line-height: var(--t6-line); font-weight: var(--weight-regular); }
+.tds-t7 { font-size: var(--t7-size); line-height: var(--t7-line); font-weight: var(--weight-regular); }

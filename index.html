@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>회의 조율 경험 설계 — Toss Product Designer Challenge 2026</title>
+<link rel="stylesheet" href="_ds/toss-design-system-tds-edd59852-6894-4330-9327-b07cdeaa1035/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/toss-design-system-tds-edd59852-6894-4330-9327-b07cdeaa1035/tokens/colors.css">
+<link rel="stylesheet" href="_ds/toss-design-system-tds-edd59852-6894-4330-9327-b07cdeaa1035/tokens/typography.css">
+<link rel="stylesheet" href="_ds/toss-design-system-tds-edd59852-6894-4330-9327-b07cdeaa1035/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/toss-design-system-tds-edd59852-6894-4330-9327-b07cdeaa1035/tokens/radius.css">
+<link rel="stylesheet" href="_ds/toss-design-system-tds-edd59852-6894-4330-9327-b07cdeaa1035/tokens/effects.css">
+<link rel="stylesheet" href="_ds/toss-design-system-tds-edd59852-6894-4330-9327-b07cdeaa1035/styles.css">
+<link rel="stylesheet" href="css/page.css">
+<template id="__bundler_thumbnail">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#3182f6"></rect><rect x="34" y="30" width="32" height="40" rx="7" fill="none" stroke="#fff" stroke-width="3"></rect><path d="M42 50l5 5 11-11" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</template>
+</head>
+<body>
+
+<!-- Slack 알림 시퀀스 — 최초 진입 1회, JS가 메시지를 순차 생성 (겹침 스택) -->
+<div id="slack-stack" class="slack-stack" aria-hidden="true">
+  <template id="slack-toast-tpl">
+    <div class="slack-toast">
+      <div class="slack-toast-icon">
+        <svg class="slack-toast-logo" viewBox="0 0 122.8 122.8" aria-hidden="true"><path d="M25.8 77.6c0 7.1-5.8 12.9-12.9 12.9S0 84.7 0 77.6s5.8-12.9 12.9-12.9h12.9v12.9zM32.3 77.6c0-7.1 5.8-12.9 12.9-12.9s12.9 5.8 12.9 12.9v32.3c0 7.1-5.8 12.9-12.9 12.9s-12.9-5.8-12.9-12.9V77.6z" fill="#e01e5a"></path><path d="M45.2 25.8c-7.1 0-12.9-5.8-12.9-12.9S38.1 0 45.2 0s12.9 5.8 12.9 12.9v12.9H45.2zM45.2 32.3c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9H12.9C5.8 58.1 0 52.3 0 45.2s5.8-12.9 12.9-12.9h32.3z" fill="#36c5f0"></path><path d="M97 45.2c0-7.1 5.8-12.9 12.9-12.9s12.9 5.8 12.9 12.9-5.8 12.9-12.9 12.9H97V45.2zM90.5 45.2c0 7.1-5.8 12.9-12.9 12.9s-12.9-5.8-12.9-12.9V12.9C64.7 5.8 70.5 0 77.6 0s12.9 5.8 12.9 12.9v32.3z" fill="#2eb67d"></path><path d="M77.6 97c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9-12.9-5.8-12.9-12.9V97h12.9zM77.6 90.5c-7.1 0-12.9-5.8-12.9-12.9s5.8-12.9 12.9-12.9h32.3c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9H77.6z" fill="#ecb22e"></path></svg>
+      </div>
+      <div class="slack-toast-content">
+        <div class="slack-toast-head">
+          <strong class="slack-toast-sender"></strong>
+          <span class="slack-toast-time">지금</span>
+        </div>
+        <div class="slack-toast-channel"></div>
+        <p class="slack-toast-message"></p>
+      </div>
+    </div>
+  </template>
+</div>
+
+<!-- ═══════════ 0. NAV ═══════════ -->
+<nav class="nav" data-screen-label="상단 내비게이션">
+  <div class="nav-inner">
+    <div class="nav-logo">회의 조율 경험 설계</div>
+    <div class="nav-links">
+      <a href="#problem">문제 정의</a>
+      <a href="#principle">설계 원칙</a>
+      <a href="#interactive-prototype">프로토타입</a>
+      <a href="#interactions">핵심 설계</a>
+      <a href="#logic">결정 방식</a>
+      <a href="#validation">검증</a>
+      <a href="#interactive-prototype" class="nav-cta">직접 체험하기</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════ 1. HERO ═══════════ -->
+<header class="hero" data-screen-label="Hero">
+  <div class="wrap">
+    <h1 class="hero-title">모두가 괜찮은 회의 시간을 정하려면,<br>누군가는 계속 <span class="accent">묻고, 기다리고, 다시 확인</span>해야 했습니다.</h1>
+    <p class="hero-problem">회의 개설자는 가능한 시간을 묻고 답변을 기다려야 했고, 참석자는 가능하더라도 피하고 싶은 시간대를 편하게 말하기 어려웠습니다. <strong class="hero-em">그래서 일정과 선호 시간대를 한 번 입력하면, 이후의 조율은 서비스가 이어가도록 설계했습니다.</strong></p>
+    <div class="hero-ctas">
+      <a href="#interactive-prototype" class="btn btn-primary">직접 조율해보기</a>
+      <a href="#principle" class="btn btn-weak">핵심 설계 먼저 보기</a>
+    </div>
+
+    <div class="compare">
+      <div class="compare-card old">
+        <span class="compare-tag">기존 방식</span>
+        <p class="compare-time" style="font-size: 24px; line-height: 1.4;">가능한 시간을 묻고,<br>기다리고, 다시 확인합니다.</p>
+        <p class="compare-desc">회의 개설자가 참석자에게 가능한 시간을 묻고, 답변을 기다려 응답을 취합합니다. 후보가 바뀌면 다시 질문하고, 최종 시간도 직접 안내합니다.</p>
+      </div>
+      <div class="compare-card new">
+        <span class="compare-tag">개선 방식</span>
+        <p class="compare-time" style="font-size: 24px; line-height: 1.4;">일정과 선호 시간대를 한 번 입력하면<br>서비스가 조율을 이어갑니다.</p>
+        <p class="compare-desc">회의에 참석하는 사람은 일정과 선호 시간대를 한 번 입력합니다. 서비스가 응답을 모아 후보를 계산하고, 필요한 사람에게만 추가로 확인한 뒤 최종 시간과 결정 기준을 안내합니다.</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+
+<!-- ═══════════ 3. 관찰 + 문제 정의 (통합) ═══════════ -->
+<section id="problem" data-screen-label="문제 정의">
+  <div class="wrap">
+    <p class="eyebrow">PROBLEM DEFINITION</p>
+    <h2 class="sec-title">빈 시간을 찾은 뒤에도<br>조율은 계속됐습니다.</h2>
+    <p class="lead">한 번의 질문으로 끝날 것 같지만, 응답이 엇갈리면 새로운 후보를 만들고 다시 묻는 과정이 반복됩니다.</p>
+
+    <div class="chat-card">
+      <p class="chat-heading">질문 한 번으로 끝나지 않고,<br>답이 모일 때까지 조율이 계속됩니다.</p>
+      <div class="chat-flow">
+        <div class="chat-msg host"><span class="chat-who">회의 개설자</span><p class="chat-bubble">“다음 주 화요일 오후 2시 괜찮으세요?”</p></div>
+        <div class="chat-msg guest"><span class="chat-who">참석자 A</span><p class="chat-bubble">“저는 가능해요.”</p></div>
+        <div class="chat-status"><span class="chat-dot" aria-hidden="true"></span>6명 중 3명 응답 · 아직 3명의 답변을 기다리고 있어요</div>
+        <div class="chat-msg guest"><span class="chat-who">참석자 B</span><p class="chat-bubble">“화요일은 어려울 것 같아요.”</p></div>
+        <div class="chat-msg host"><span class="chat-who">회의 개설자</span><p class="chat-bubble">“그러면 금요일 오후 1시는 괜찮으세요?”</p></div>
+        <div class="chat-msg guest"><span class="chat-who">참석자 C</span><p class="chat-bubble">“가능해요.”</p><p class="chat-thought">(점심 직후는 싫은데…)</p></div>
+        <div class="chat-status"><span class="chat-dot" aria-hidden="true"></span>새로운 후보로 다시 확인 중 · 아직 2명의 답변을 기다리고 있어요</div>
+      </div>
+      <p class="chat-conclusion">후보가 바뀔 때마다 질문과 대기가 다시 시작됐고,<br>가능하다고 답한 사람의 피하고 싶은 시간은 조율에 반영되지 못합니다.</p>
+    </div>
+
+    <div class="card-grid cols-2 problem-cards">
+      <div class="card">
+        <p class="card-q">회의 개설자의 문제</p>
+        <p class="card-title">회의가 정해질 때까지 누군가 계속 확인해야 합니다.</p>
+        <p class="card-body">가능한 시간을 묻고, 답변을 기다리고, 후보가 바뀌면 다시 질문해야 합니다.</p>
+        <p class="card-conclusion">회의가 정해질 때까지 누군가의 시간과 주의가 계속 쓰입니다.</p>
+      </div>
+      <div class="card">
+        <p class="card-q">참석자의 문제</p>
+        <p class="card-title">가능하지만 피하고 싶은 시간을 편하게 말하기 어렵습니다.</p>
+        <p class="card-body">캘린더가 비어 있어도 개인 일정이 있거나, 점심 직후처럼 되도록 피하고 싶은 시간일 수 있습니다.</p>
+        <p class="card-conclusion">가능하다고 답한 순간, 말하지 못한 조건은 조율에서 빠집니다.</p>
+      </div>
+    </div>
+
+    <p class="bridge">그래서 해결해야 할 것은 서로 묻고 기다리는 과정을 줄이는 것뿐 아니라,<br>캘린더 밖 일정과 선호 시간대까지 조율에 반영하는 것이었습니다.</p>
+  </div>
+</section>
+
+<!-- ═══════════ 4. 제품이 가져갈 책임 ═══════════ -->
+<section id="principle" class="bg-grey tight" data-screen-label="제품이 가져갈 책임">
+  <div class="wrap">
+    <p class="eyebrow">PRODUCT PRINCIPLE</p>
+    <h2 class="sec-title">사람은 회의에 필요한 정보만 입력하고,<br>이후의 조율은 서비스가 이어갑니다.</h2>
+    <p class="lead">회의를 만든 사람은 회의 정보와 참석자를 설정한 뒤 자신의 일정과 선호를 입력하고, 다른 참석자도 같은 방식으로 응답합니다. 입력된 조건은 후보 계산부터 최종 확정까지 같은 기준으로 활용합니다.</p>
+
+    <div class="card-grid cols-3">
+      <div class="card">
+        <p class="card-q">핵심 원칙 01</p>
+        <p class="card-title">한 번 입력한 조건을 조율 전체에 활용합니다.</p>
+        <p class="card-body">캘린더 일정, 추가 일정과 선호 시간대를 후보 계산과 이후 판단에 계속 사용합니다.</p>
+      </div>
+      <div class="card">
+        <p class="card-q">핵심 원칙 02</p>
+        <p class="card-title">가능한 시간과 피하고 싶은 시간을 구분합니다.</p>
+        <p class="card-body">참석할 수 없는 시간은 후보에서 제외하고, 가능하지만 피하고 싶은 시간은 다른 후보를 먼저 찾는 조건으로 반영합니다.</p>
+      </div>
+      <div class="card">
+        <p class="card-q">핵심 원칙 03</p>
+        <p class="card-title">개인의 조건은 공개하지 않고, 결정 기준만 안내합니다.</p>
+        <p class="card-body">개인 일정과 응답은 다른 참석자에게 보여주지 않고, 결과가 정해진 기준만 설명합니다.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════ 5. INTERACTIVE PROTOTYPE — 직접 조율해보기 ═══════════ -->
+<section id="interactive-prototype" data-screen-label="직접 조율해보기">
+  <div class="wrap">
+    <p class="eyebrow">INTERACTIVE PROTOTYPE</p>
+    <h2 class="sec-title">회의를 만드는 사람과 요청을 받는 사람,<br>두 입장을 직접 경험해보세요.</h2>
+    <p class="lead">회의 만들기 탭에서는 회의 정보와 참석자를 설정한 뒤, 자신의 일정과 선호를 입력하고 참석 요청을 보냅니다. 참석 요청 받기 탭에서는 자신의 일정과 선호를 입력해 응답합니다. 이후에는 두 역할 모두 같은 조율 흐름을 거쳐 최종 시간과 결정 기준을 확인합니다.</p>
+    <div class="proto-brief">
+      <div class="proto-brief-item"><span class="proto-brief-label">체험 역할</span>회의를 만든 사람 · 참석 요청을 받은 사람</div>
+      <div class="proto-brief-item"><span class="proto-brief-label">공통 입력</span>캘린더 밖 일정 · 피하고 싶은 시간</div>
+      <div class="proto-brief-item"><span class="proto-brief-label">체험 범위</span>회의 생성부터 추가 확인, 일정 확정까지</div>
+    </div>
+
+    <div id="interactive-root" class="proto-shell"></div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════ 6. 네 가지 핵심 인터랙션 ═══════════ -->
+<section id="interactions" class="bg-grey tight" data-screen-label="네 가지 핵심 인터랙션">
+  <div class="wrap">
+    <p class="eyebrow">KEY INTERACTIONS</p>
+    <h2 class="sec-title">사람 사이에 반복되던 질문을<br>네 가지 인터랙션으로 옮겼습니다.</h2>
+
+    <p class="ix-group">입력할 때</p>
+
+    <div class="interaction">
+      <div class="interaction-card">
+        <div class="interaction-head">
+          <span class="interaction-num">01</span>
+          <h3>캘린더 밖 일정도 한 번에 입력합니다</h3>
+        </div>
+        <div class="ba-grid">
+          <div class="ba-col before">
+            <p class="ba-tag">기존 조율</p>
+            <p class="ba-quote">“다음 주 월요일 5시 괜찮으세요?”</p>
+            <p class="ba-desc">캘린더가 비어 보여도 개인 일정까지 알 수는 없습니다.</p>
+          </div>
+          <div class="ba-col after">
+            <p class="ba-tag">서비스로 옮긴 방식</p>
+            <p class="ba-quote">“캘린더에 없는 일정이 있나요?”</p>
+            <div class="ba-ui ba-ui-stacked"><span class="ba-ui-main">월요일 17:00–18:30</span><span class="ba-ui-helper">이 시간은 회의 후보에서 제외할게요.</span></div>
+            <p class="ba-desc">일정의 이유는 공개하지 않고 시간만 반영합니다.</p>
+          </div>
+        </div>
+        <p class="interaction-key">개인적인 이유를 설명하지 않아도, 실제로 어려운 시간을 조율에 반영할 수 있습니다.</p>
+      </div>
+    </div>
+
+    <div class="interaction">
+      <div class="interaction-card">
+        <div class="interaction-head">
+          <span class="interaction-num">02</span>
+          <h3>가능한 시간과 피하고 싶은 시간을 나눠 받습니다</h3>
+        </div>
+        <div class="ba-grid">
+          <div class="ba-col before">
+            <p class="ba-tag">기존 조율</p>
+            <p class="ba-quote">“금요일 1시 가능하세요?”</p>
+            <p class="ba-thought">(가능은 한데 점심 직후는 싫은데…)</p>
+            <p class="ba-desc">가능하다고 답하더라도 피하고 싶은 시간까지는 전달되지 않습니다.</p>
+          </div>
+          <div class="ba-col after">
+            <p class="ba-tag">서비스로 옮긴 방식</p>
+            <p class="ba-quote">“되도록 피하고 싶은 시간대가 있나요?”</p>
+            <div class="ba-ui"><span>매일 점심 직후 12:00–14:00</span><span class="ba-ui-tag">가능한 다른 시간을 먼저 탐색</span></div>
+            <p class="ba-desc">참석은 가능하지만 불편한 시간을 별도로 반영합니다.</p>
+          </div>
+        </div>
+        <p class="interaction-key">가능한 시간과 편한 시간을 나눠 받아, 단순한 가능 여부보다 선호 시간대를 구체적으로 반영합니다.</p>
+      </div>
+    </div>
+
+    <p class="ix-group">조율할 때</p>
+
+    <div class="interaction">
+      <div class="interaction-card">
+        <div class="interaction-head">
+          <span class="interaction-num">03</span>
+          <h3>가장 적합한 후보가 피하고 싶은 시간과 겹칠 때만 다시 확인합니다</h3>
+        </div>
+        <div class="ba-grid">
+          <div class="ba-col before">
+            <p class="ba-tag">기존 조율</p>
+            <p class="ba-quote">“그럼 금요일 1시는 다들 괜찮으세요?”</p>
+            <p class="ba-desc">후보가 바뀌면 모든 참석자가 같은 질문에 다시 답해야 합니다.</p>
+          </div>
+          <div class="ba-col after">
+            <p class="ba-tag">서비스로 옮긴 방식</p>
+            <div class="ba-crop">
+              <p class="ba-crop-title">금요일 1시를<br>후보에 포함해도 될까요?</p>
+              <div class="ba-crop-btn primary">후보에 포함해도 돼요</div>
+              <div class="ba-crop-btn">후보에서 제외해주세요</div>
+            </div>
+            <p class="ba-desc">다른 후보가 없을 때 필요한 참석자에게만 비공개로 확인합니다.</p>
+          </div>
+        </div>
+        <p class="interaction-key">전체 조율을 다시 시작하지 않고, 후보 판단에 필요한 사람에게만 최소한으로 확인합니다.</p>
+      </div>
+    </div>
+
+    <div class="interaction">
+      <div class="interaction-card">
+        <div class="interaction-head">
+          <span class="interaction-num">04</span>
+          <h3>같은 기준으로 시간을 정하고, 결과를 안내합니다</h3>
+        </div>
+        <div class="ba-grid">
+          <div class="ba-col before">
+            <p class="ba-tag">기존 조율</p>
+            <p class="ba-quote">“일정 모아보니 금요일 1시가 제일 괜찮을 것 같아요. 이때로 잡을게요.”</p>
+            <p class="ba-desc">회의 개설자가 응답을 취합해 시간을 결정하고, 다시 결과를 안내합니다.</p>
+          </div>
+          <div class="ba-col after">
+            <p class="ba-tag">서비스로 옮긴 방식</p>
+            <div class="ba-crop">
+              <p class="ba-crop-title">금요일 1시로 정해졌어요.</p>
+              <div class="ba-crop-row"><span class="ba-crop-check">✓</span>필수 참석자 모두 가능</div>
+              <div class="ba-crop-row"><span class="ba-crop-check">✓</span>캘린더·추가 일정과 겹치지 않음</div>
+              <div class="ba-crop-row"><span class="ba-crop-check">✓</span>피하고 싶은 시간과의 충돌 최소</div>
+            </div>
+            <p class="ba-desc">서비스가 동일한 기준으로 시간을 정하고, 모든 참석자에게 결과와 선정 기준을 안내합니다.</p>
+          </div>
+        </div>
+        <p class="interaction-key">회의를 만든 사람이 최종 시간을 선택하거나, 결정 이유를 따로 설명하지 않아도 됩니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 6.5 ROLE SHIFT ═══════════ -->
+<section id="coordination-cases" class="tight" data-screen-label="역할별 리소스 변화">
+  <div class="wrap">
+    <p class="eyebrow">ROLE SHIFT</p>
+    <h2 class="sec-title">사람이 이어가던 질문과 확인을<br>서비스가 맡습니다.</h2>
+    <p class="lead">회의를 만든 사람은 회의 정보와 참석자를 설정한 뒤 자신의 일정과 선호를 입력합니다. 다른 참석자도 일정과 선호를 입력하면, 이후의 응답 요청과 후보 계산, 추가 확인과 최종 확정은 서비스가 맡습니다.</p>
+
+    <div class="shift-card before">
+      <p class="shift-tag">기존 조율</p>
+      <div class="shift-row">
+        <span class="shift-role">회의 개설자</span>
+        <div class="shift-chips"><em class="shift-pair"><span>질문 발송</span><i>→</i></em><em class="shift-pair"><span class="wait">응답 대기</span><i>→</i></em><em class="shift-pair"><span>답변 취합</span><i>→</i></em><em class="shift-pair"><span>후보 다시 구성</span><i>→</i></em><em class="shift-pair"><span class="wait">재질문</span><i>→</i></em><span>최종 시간 안내</span></div>
+      </div>
+      <div class="shift-row">
+        <span class="shift-role">참석자</span>
+        <div class="shift-chips"><em class="shift-pair"><span>질문 확인</span><i>→</i></em><em class="shift-pair"><span>일정 확인</span><i>→</i></em><em class="shift-pair"><span>가능 여부 답변</span><i>→</i></em><span class="wait">후보가 바뀌면 다시 응답</span></div>
+      </div>
+    </div>
+    <div class="shift-move" aria-hidden="true"></div>
+    <div class="shift-card after">
+      <p class="shift-tag">개선 후</p>
+      <div class="shift-row">
+        <span class="shift-role">회의 개설자</span>
+        <div class="shift-chips"><em class="shift-pair"><span>회의 정보와 참석자 설정</span><i>→</i></em><em class="shift-pair"><span>내 일정과 선호 입력</span><i>→</i></em><em class="shift-pair"><span>참석 요청 전송</span><i>→</i></em><em class="shift-pair"><span>확정 결과 확인</span><i>→</i></em><span>필요한 경우 다시 조율 요청</span></div>
+      </div>
+      <div class="shift-row">
+        <span class="shift-role">참석자</span>
+        <div class="shift-chips"><em class="shift-pair"><span>일정과 선호 입력</span><i>→</i></em><em class="shift-pair"><span>필요한 경우에만 추가 응답</span><i>→</i></em><em class="shift-pair"><span>확정 결과 확인</span><i>→</i></em><span>필요한 경우 다시 조율 요청</span></div>
+      </div>
+      <div class="shift-row service">
+        <span class="shift-role">서비스</span>
+        <div class="shift-chips"><em class="shift-pair"><span>응답 요청과 재알림</span><i>→</i></em><em class="shift-pair"><span>후보 계산</span><i>→</i></em><em class="shift-pair"><span>필요한 사람에게만 추가 확인</span><i>→</i></em><em class="shift-pair"><span>최종 시간 확정</span><i>→</i></em><span>결과와 결정 기준 안내</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════ 7. DECISION RULES ═══════════ -->
+<section id="logic" class="tight" data-screen-label="시간이 정해지는 기준">
+  <div class="wrap">
+    <p class="eyebrow">DECISION FLOW</p>
+    <h2 class="sec-title">입력한 조건은<br>같은 순서로 적용됩니다.</h2>
+    <p class="lead">참석할 수 없는 시간은 먼저 제외하고, 피하고 싶은 시간대는 가능한 다른 후보를 찾는 조건으로 반영합니다.</p>
+
+    <div class="flow2">
+      <div class="flow2-grid">
+        <div class="flow2-rail" aria-hidden="true"></div>
+        <div class="flow2-step">
+          <span class="flow2-num">01</span>
+          <div class="flow2-card">
+            <b>조건 수집</b>
+            <p>캘린더 일정, 추가 일정, 선호 시간대와 참석 역할을 모읍니다.</p>
+            <span class="flow2-tags"><em>캘린더 일정</em><em>추가 일정</em><em>선호 시간대</em><em>참석 역할</em></span>
+          </div>
+        </div>
+        <div class="flow2-step">
+          <span class="flow2-num">02</span>
+          <div class="flow2-card">
+            <b>필수 조건으로 후보 제외</b>
+            <p>필수 참석자의 일정과 겹치는 후보를 제외합니다.</p>
+            <span class="flow2-tags"><em>참석할 수 없는 시간</em></span>
+          </div>
+        </div>
+        <div class="flow2-step">
+          <span class="flow2-num">03</span>
+          <div class="flow2-card">
+            <b>후보 우선순위 비교</b>
+            <p>남은 후보를 피하고 싶은 시간과의 충돌, 참석 가능한 인원 순으로 비교합니다.</p>
+            <span class="flow2-tags"><em>가능하지만 피하고 싶은 시간</em></span>
+          </div>
+        </div>
+        <div class="flow2-step">
+          <span class="flow2-num">04</span>
+          <div class="flow2-card">
+            <b>최종 후보 확인</b>
+            <p>추가 확인이 필요하면 응답을 반영하고, 필요하지 않으면 바로 후보를 확정합니다.</p>
+          </div>
+        </div>
+        <div class="flow2-step final">
+          <span class="flow2-num">05</span>
+          <div class="flow2-card">
+            <b>시간 확정 및 안내</b>
+            <p>남은 후보를 동일한 우선순위로 비교해 최종 시간을 정하고, 모든 참석자에게 결과와 결정 기준을 안내합니다.</p>
+          </div>
+        </div>
+
+        <div class="flow2-exc grey exc-a">
+          <b>후보가 남지 않으면</b>
+          <p>회의 개설자에게 기간, 회의 길이 또는 참석 조건 조정을 요청합니다.</p>
+        </div>
+        <div class="flow2-exc warn exc-b">
+          <b>회의 시간이 하나로 좁혀졌지만, 필수 참석자가 피하고 싶다고 입력한 시간이라면</b>
+          <p>그 사람에게만 이 시간도 괜찮은지 확인합니다.</p>
+          <p class="flow2-exc-sub">응답을 반영해 후보를 제외하거나 04단계에서 다시 비교합니다.</p>
+        </div>
+      </div>
+
+      <div class="flow2-priority">
+        <p class="flow2-priority-title">후보 우선순위</p>
+        <div class="flow2-priority-strip">
+          <span class="fp-item"><i>1</i>필수 참석자 모두 가능</span>
+          <span class="fp-arrow" aria-hidden="true">→</span>
+          <span class="fp-item"><i>2</i>비선호 시간대와 충돌이 적음</span>
+          <span class="fp-arrow" aria-hidden="true">→</span>
+          <span class="fp-item"><i>3</i>참석 권장자가 많이 참석 가능</span>
+          <span class="fp-arrow" aria-hidden="true">→</span>
+          <span class="fp-item"><i>4</i>조건이 같다면 요청 기간 안에서 더 빠른 시간</span>
+        </div>
+        <p class="flow2-priority-note">조건이 같은 후보는 요청 기간 안에서 더 빠른 시간으로 확정해, 마지막 선택의 부담도 개인에게 남기지 않습니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 8. 초기안의 한계 + 시나리오 테스트 (통합) ═══════════ -->
+<section id="validation" class="bg-grey" data-screen-label="초기안과 시나리오 테스트">
+  <div class="wrap">
+    <p class="eyebrow">FAILED FIRST ATTEMPT</p>
+    <h2 class="sec-title">초기안은 빈 시간으로 후보를 만들고,<br>필요할 때 다시 확인하는 방식이었습니다.</h2>
+    <p class="lead">가장 빠른 해결처럼 보였지만, 이 방식은 캘린더 밖의 일정과 개인적인 선호를 반영하지 못했고, 후보가 달라질 때마다 질문과 대기, 응답 취합이 반복됐습니다.</p>
+
+    <div class="fail-grid">
+      <div class="fail-mock">
+        <span class="fail-stamp">기각된 초기안</span>
+        <p class="fm-title">추천 시간</p>
+        <div class="ms-candidate best" style="border-color: var(--grey-300); background: var(--grey-50);">
+          <p class="ms-time">월요일 17:00–18:00</p>
+          <ul><li>6명 모두 캘린더가 비어 있어요</li></ul>
+        </div>
+        <div class="ms-candidate" style="background: var(--grey-50);">
+          <p class="ms-time">금요일 13:00–14:00</p>
+          <ul><li>참석자 1명의 가능 여부를 다시 확인해야 해요</li></ul>
+        </div>
+        <div class="ms-cta" style="background: var(--grey-800);">가능 여부 다시 묻기</div>
+      </div>
+
+      <div class="fail-reasons">
+        <div class="fail-reason">
+          <h4>캘린더 밖의 일정과 선호를 알 수 없었습니다.</h4>
+          <p>캘린더가 비어 있다는 이유만으로 후보에 포함돼, 실제 일정과 선호가 빠졌습니다.</p>
+        </div>
+        <div class="fail-reason">
+          <h4>후보가 달라질 때마다 다시 질문해야 했습니다.</h4>
+          <p>새로운 조건이 생기거나 후보가 바뀌면 참석자에게 다시 확인해야 했습니다.</p>
+        </div>
+        <div class="fail-reason">
+          <h4>가능하지만 피하고 싶은 시간을 표현하기 어려웠습니다.</h4>
+          <p>가능 여부만 질문해, 참석자는 불편한 시간을 설명하거나 포기해야 했습니다.</p>
+        </div>
+        <div class="fail-reason">
+          <h4>응답 취합과 최종 결정이 사람의 업무로 남았습니다.</h4>
+          <p>답변을 기다리고 취합해 시간을 결정하는 책임이 회의 개설자에게 남았습니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-break">
+      <p class="eyebrow">SCENARIO TEST</p>
+      <h2 class="sec-title">동일한 조건으로<br>두 설계를 비교했습니다.</h2>
+      <p class="lead">아래 결과는 실제 서비스 성과나 대규모 사용성 수치가 아니라, 동일한 가상 시나리오에서 두 설계가 반복 질문과 캘린더 밖 일정·선호를 어떻게 처리하는지 비교한 결과입니다.</p>
+    </div>
+
+    <div class="vs-table">
+      <div class="vs-row vs-head">
+        <div class="vs-cell crit"></div>
+        <div class="vs-cell old-cell">초기안</div>
+        <div class="vs-cell new-cell">개선안</div>
+      </div>
+      <div class="vs-row">
+        <div class="vs-cell crit">일정과 선호 수집</div>
+        <div class="vs-cell old-cell">캘린더의 빈 시간만 확인합니다.</div>
+        <div class="vs-cell new-cell">추가 일정과 피하고 싶은 시간까지 한 번 입력합니다.</div>
+      </div>
+      <div class="vs-row">
+        <div class="vs-cell crit">참석자 응답</div>
+        <div class="vs-cell old-cell">후보가 달라질 때마다 가능 여부를 질문합니다.</div>
+        <div class="vs-cell new-cell">입력된 조건을 조율 과정 전체에 활용합니다.</div>
+      </div>
+      <div class="vs-row">
+        <div class="vs-cell crit">후보 결정</div>
+        <div class="vs-cell old-cell">회의 개설자가 답변을 취합해 결정합니다.</div>
+        <div class="vs-cell new-cell">서비스가 동일한 기준으로 후보를 계산하고 확정합니다.</div>
+      </div>
+      <div class="vs-row">
+        <div class="vs-cell crit">결과 안내</div>
+        <div class="vs-cell old-cell">회의 개설자가 최종 시간과 이유를 전달합니다.</div>
+        <div class="vs-cell new-cell">서비스가 결과와 결정 기준을 안내합니다.</div>
+      </div>
+    </div>
+
+    <div class="statement-block">
+      <p class="statement">초기안은 캘린더의 빈 시간으로 후보를 제안하는 데 그쳤지만, 개선안은 <span class="accent">일정과 선호 시간대 수집부터 필요한 추가 확인과 결과 안내까지</span> 조율 과정을 이어갑니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 9. 한계와 다음 검증 + AI 활용 ═══════════ -->
+<section id="limits" class="tight" data-screen-label="한계와 다음 검증">
+  <div class="wrap">
+    <p class="eyebrow">LIMITS</p>
+    <h2 class="sec-title">반복되는 질문과 대기는 줄였지만,<br>여전히 검증해야 할 지점이 있습니다.</h2>
+
+    <div class="limits">
+      <div class="limit-card">
+        <p class="limit-num">한계 01</p>
+        <h4>입력하지 않은 일정은 알 수 없습니다</h4>
+        <p>사용자가 입력하지 않은 캘린더 밖 일정은 조율에 반영할 수 없습니다.</p>
+      </div>
+      <div class="limit-card">
+        <p class="limit-num">한계 02</p>
+        <h4>선호 입력을 번거롭게 느낄 수 있습니다</h4>
+        <p>반복 질문을 줄이는 대신 초기 입력이 필요하므로, 입력 범위가 적절한지 확인해야 합니다.</p>
+      </div>
+      <div class="limit-card">
+        <p class="limit-num">한계 03</p>
+        <h4>시간이 정해지는 기준을 신뢰할 수 있어야 합니다</h4>
+        <p>사용자가 시간 선택 기준을 이해하고, 서비스가 정한 결과를 받아들일 수 있는지 검증해야 합니다.</p>
+      </div>
+      <div class="limit-card">
+        <p class="limit-num">한계 04</p>
+        <h4>조건이 맞지 않거나 상황이 바뀌면 다시 조율해야 합니다</h4>
+        <p>가능한 후보가 없거나 확정 이후 새로운 일정이 생기면 조건 조정과 다시 조율이 필요합니다. 이때 기존 입력을 얼마나 재사용할 수 있는지 검증해야 합니다.</p>
+      </div>
+    </div>
+
+    <div class="next-checks">
+      <h3>다음 검증 항목</h3>
+      <div class="check-groups">
+        <div class="check-group">
+          <h4>입력 경험</h4>
+          <ul>
+            <li>일정과 선호 시간대를 한 번에 입력하는 방식이 반복 질문보다 편한가</li>
+            <li>불가능한 시간과 피하고 싶은 시간의 차이를 이해하는가</li>
+            <li>비공개 입력이 피하고 싶은 시간대를 솔직하게 표현하도록 돕는가</li>
+          </ul>
+        </div>
+        <div class="check-group">
+          <h4>조율 효율</h4>
+          <ul>
+            <li>회의 개설자가 질문·대기·취합에 쓰는 시간이 줄어드는가</li>
+            <li>참석자의 반복 응답 횟수가 줄어드는가</li>
+            <li>회의 요청부터 확정까지 걸리는 시간이 단축되는가</li>
+          </ul>
+        </div>
+        <div class="check-group">
+          <h4>결과 신뢰</h4>
+          <ul>
+            <li>필요한 경우에만 오는 추가 확인을 부담 없이 받아들이는가</li>
+            <li>결정 기준을 이해하고 서비스가 정한 시간을 받아들일 수 있는가</li>
+            <li>개인의 조건을 공개하지 않아도 결과가 정해진 이유를 이해할 수 있는가</li>
+          </ul>
+        </div>
+      </div>
+      <p class="validation-note">확정 이후 다시 조율을 요청할 수 있는 조건과, 반복 요청이 다른 참석자에게 주는 부담도 함께 검증해야 합니다.</p>
+    </div>
+
+    <div class="ai-box compact">
+      <div class="ai-box-content">
+        <div>
+          <h3>AI를 활용한 범위</h3>
+          <p class="ai-summary">AI를 활용해 회의를 만든 사람 1명과 다른 참석자 5명이 조율하는 6인 시나리오를 구성하고, 응답 지연, 선호 충돌, 후보 부족과 같은 예외 상황을 검토했습니다. 이를 바탕으로 회의 생성과 참석 요청 응답이 공통 일정 입력 이후 하나의 조율 흐름으로 이어지는 정적 웹 프로토타입을 구현했습니다.</p>
+        </div>
+        <div>
+          <h3>AI가 판단하지 않는 범위</h3>
+          <p class="ai-summary">회의 시간은 AI가 정하지 않습니다. 불가능한 시간 제외, 선호 충돌 최소화, 필요한 참석자에게만 추가 확인하는 명시적인 규칙으로 결정합니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 10. CLOSING ═══════════ -->
+<section class="closing" data-screen-label="Closing">
+  <div class="wrap">
+    <p class="eyebrow">CONCLUSION</p>
+    <h2 class="closing-title">사람 사이에 남아 있던 애매한 순간을,<br>서비스의 역할로 바꿨습니다.</h2>
+    <p class="closing-copy">다시 묻고 답을 기다리는 과정과, 피하고 싶은 시간을 설명해야 하는 부담을 개인의 몫으로 남기지 않았습니다.</p>
+    <a href="#interactive-prototype" class="btn btn-primary">직접 조율해보기</a>
+  </div>
+</section>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer data-screen-label="Footer">
+  <div class="wrap">
+    <p>본 페이지의 인물, 직급, 일정은 설계 구조를 검증하기 위해 구성한 가상의 시나리오입니다.</p>
+    <p>비교 결과는 실제 서비스 성과나 대규모 사용자 데이터가 아니라, 동일한 조건에서 두 설계 구조를 비교한 시나리오 테스트 결과입니다.</p>
+    <p>문제 정의와 사용 흐름을 한 페이지에서 확인할 수 있도록, 별도 백엔드와 API 없이 동작하는 웹 프로토타입으로 제작했습니다.</p>
+  </div>
+</footer>
+
+<!-- React + TDS bundle + prototype -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="_ds/toss-design-system-tds-edd59852-6894-4330-9327-b07cdeaa1035/_ds_bundle.js"></script>
+<script type="text/babel" src="js/proto-ui.jsx"></script>
+<script type="text/babel" src="js/avail-flow.jsx"></script>
+<script type="text/babel" src="js/host.jsx"></script>
+<script type="text/babel" src="js/interactive.jsx"></script>
+<script src="js/page-fx.js"></script>
+
+</body>
+</html>
